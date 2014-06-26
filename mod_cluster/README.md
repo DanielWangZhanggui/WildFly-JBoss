@@ -40,7 +40,7 @@ MemManagerFile /var/cache/mod_cluster
 ~~~
 - service httpd restart
 - verify if the mod_cluster works or not via http://10.66.218.108/mod_cluster-manager.
-  - Please don't forget clean cookies when can't see the mod_cluster-manager page.
+  - Please don't forget to clean cookies when can't see the mod_cluster-manager page.
 ###EAP 6
 #### Standalone
 ~~~
