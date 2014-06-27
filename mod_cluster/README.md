@@ -18,8 +18,18 @@ LoadModule advertise_module modules/mod_advertise.so
 MemManagerFile /var/cache/mod_cluster
 
 
+Listen 10.66.218.108:6666
 
-<VirtualHost *:80>
+ <VirtualHost *:6666>
+# See http://docs.jboss.org/mod_cluster/1.2.0/html_single/#d0e485
+    CreateBalancers 1
+#ProxyPass        /togoogle http://www.baidu.com
+#ProxyPassReverse /togoogle http://www.baidu.com
+
+ProxyPass / balancer://mycluster stickysession=JSESSIONID|jsessionid nofailover=on
+ProxyPassReverse / balancer://mycluster
+ProxyPreserveHost on
+
     <Directory />
         Order deny,allow
         Allow from all
@@ -36,7 +46,6 @@ MemManagerFile /var/cache/mod_cluster
           ServerAdvertise Off
           EnableMCPMReceive On
 </VirtualHost>
-
 ~~~
 - service httpd restart
 - verify if the mod_cluster works or not via http://10.66.218.108/mod_cluster-manager.
@@ -45,7 +54,7 @@ MemManagerFile /var/cache/mod_cluster
 #### Standalone
 ~~~
 <subsystem xmlns="urn:jboss:domain:modcluster:1.1">
-            <mod-cluster-config advertise-socket="modcluster" connector="ajp"  proxy-list="10.66.218.108:80">
+            <mod-cluster-config advertise-socket="modcluster" connector="ajp"  proxy-list="10.66.218.108:6666">
               .
             </mod-cluster-config>
 </subsystem>
@@ -62,3 +71,13 @@ MemManagerFile /var/cache/mod_cluster
 ~~~
 Use -Djboss.bind.address to specify which IP will be bound for the EAP, mod_cluster will store it as a destination in the cluster.
 ~~~
+
+- Test 
+ - Deploy a same application to each EAP. For instance, the web context is helloWeb
+ - ModCluster page shows there's one Web Context enabled in each EAP node.
+ - Type "http://10.66.218.108:6666/helloWeb" in Web browser.
+
+- Link 
+   - Regarding to ModCluster balancing policy, refer to [ModCluster Subsystem configuration](http://docs.jboss.org/mod_cluster/1.2.0/html_single/#ModClusterSubSystemConfiguration)
+   - http://docs.jboss.org/mod_cluster/1.2.0/html_single/
+   - http://www.snip2code.com/Snippet/9830/mod_cluster-and-ProxyPass---static-from-
