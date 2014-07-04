@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   template="/WEB-INF/templates/default.xhtml">
+   <ui:define name="content">
+      <h1>Shopping Rocks!</h1>
+     
+      <h2>Products</h2>
+      <h:panelGroup rendered="#{empty goods}">
+         <em>No Products on shelf</em>
+      </h:panelGroup>
+      <h:form id="shopping">
+      <h:dataTable var="_goods" value="#{goods}" rendered="#{not empty goods}" styleClass="simpletablestyle">
+         <h:column>
+            <f:facet name="header">Name</f:facet>#{_goods.name}
+            </h:column>
+         <h:column>
+            <f:facet name="header">Price</f:facet>
+                #{_goods.price}
+            </h:column>
+         <h:column>
+           <f:facet name="header">Quantity</f:facet>
+              <h:inputText id="quantity" for="quantity" value="#{quantity}" style="width:28px;"/>
+         </h:column>
+          <h:column>
+           <f:facet name="header">Billing</f:facet>
+             #{_goods.billing}"
+         </h:column>
+         <h:column>
+           <f:facet name="header"></f:facet>
+              <h:commandLink id="addToShoppingCart" action="#{billingController.addToShoppingCart(_goods)}" value="AddToShoppingCart" styleClass="shoppingcart"/>
+         </h:column>
+      </h:dataTable> 
+       <p>
+            <h:panelGrid columns="2">
+               <h:commandButton id="commitBilling" action="#{billingController.commitBilling}" value="Purchase" styleClass="register"/>
+               <h:messages styleClass="messages" errorClass="invalid" infoClass="valid" warnClass="warning"
+                          globalOnly="true"/>
+            </h:panelGrid>
+         </p> 
+      </h:form>
+      
+      <h2>BillingInfo</h2>
+      <h:panelGroup rendered="#{empty billing}">
+         <em>No Billings.</em>
+      </h:panelGroup>
+      <h:dataTable var="_billing" value="#{billings}" rendered="#{not empty billings}" styleClass="simpletablestyle">
+         <h:column>
+            <f:facet name="header">Id</f:facet>
+                #{_billing.id}
+            </h:column>
+         <h:column>
+            <f:facet name="header">Name</f:facet>
+                #{_billing.name}
+            </h:column>
+         <h:column>
+            <f:facet name="header">Email</f:facet>
+                #{_billing.email}
+            </h:column>
+         <h:column>
+            <f:facet name="header">Price</f:facet>
+                #{_billing.price}
+            </h:column>
+        <h:column>
+            <f:facet name="header">Goodss</f:facet>
+                #{_billing.goodss}
+            </h:column>
+      </h:dataTable> 
+   </ui:define>
+</ui:composition>
