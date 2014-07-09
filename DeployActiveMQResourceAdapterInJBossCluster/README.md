@@ -18,8 +18,9 @@
 </networkConnectors>
 ~~~
   - Here I just use static reference to take an example, more advanced feature could be found in page [Networks of Brokers](http://activemq.apache.org/networks-of-brokers.html)
-- To let the resource adapter connect to the broker,  make sure there's a <transportConnector> defined in the broker-config.xml, for instance, <transportConnector uri="tcp://10.66.218.10:61616"/>	
-- Recreate a new activemq-ra.rar file by using "jar cf activemq-ra.rar ./*", then deploy it to JBoss
+- To allow clients to connect to the broker,  we can add a <transportConnector> in the broker-config.xml, for instance, <transportConnector uri="tcp://10.66.218.10:61616"/>	
+- Recreate a new activemq-ra.rar file by using "jar cf activemq-ra.rar ./*", then deploy it to JBoss.
+- Note: you need to deploy a resouce adapter for your each node. So you need to configure a resource-adapter for your each node.
 ###Configurations in JBoss side.
 - Declare the resource adapter in standalone-full-ha.xml
 ~~~
@@ -71,16 +72,15 @@
             </resource-adapters>
         </subsystem>
 ~~~
-- Note: we need to set the archive to the resource adapter archive file name.
-- To make the mdb to use activemq resource adapter in <subsystem xmlns="urn:jboss:domain:ejb3:1.4">, modify:
+- Note: we need to set the archive to the resource adapter archive file name, and we set ServerUrl to connect your local broker which refers to the <transportConnector> in the broker-config.xml file.
+- To make mdb use activemq resource adapter, modify:
 ~~~
 <mdb>
           <resource-adapter-ref resource-adapter-name="${ejb.resource-adapter-name:hornetq-ra}"/>
           <bean-instance-pool-ref pool-name="mdb-strict-max-pool"/>
 </mdb>
 ~~~
-to:
-~~~
+in <subsystem xmlns="urn:jboss:domain:ejb3:1.4"> to:
 ~~~
 <mdb>
         <resource-adapter-ref resource-adapter-name="activemq-rar.rar"/>
