@@ -80,7 +80,7 @@
           <bean-instance-pool-ref pool-name="mdb-strict-max-pool"/>
 </mdb>
 ~~~
-in <subsystem xmlns="urn:jboss:domain:ejb3:1.4"> to:
+in subsystem ejb3 to:
 ~~~
 <mdb>
         <resource-adapter-ref resource-adapter-name="activemq-rar.rar"/>
