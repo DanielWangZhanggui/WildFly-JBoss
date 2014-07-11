@@ -11,9 +11,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
-import per.daniel.j2ee.shopping.model.Billing;
 import per.daniel.j2ee.shopping.model.Goods;
-import per.daniel.j2ee.shopping.model.Member;
 
 @ApplicationScoped
 public class GoodsRepository {
@@ -27,8 +25,8 @@ public class GoodsRepository {
 
     public Goods findByName(String name)
     {
-    	Query query = em.createNamedQuery("findAllGoodsByName");
-    	query.setParameter("name", name);
+    	Query query = em.createQuery("select g from Goods g where g.name like ?1");
+    	query.setParameter(1, name);
     	return (Goods) query.getResultList().get(0);
     }
     
@@ -43,6 +41,11 @@ public class GoodsRepository {
     public void updateGoods(Goods goods) {
     	Session session = (Session) em.getDelegate();
         session.update(goods);
+    }
+    
+    public void addGoods(Goods goods) {
+    	Session session = (Session) em.getDelegate();
+        session.save(goods);
     }
     
 }

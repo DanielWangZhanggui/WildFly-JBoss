@@ -18,20 +18,21 @@ public class BillingListProducer {
     @Inject
     private BillingRepository billingRepository;
 
-    private List<Billing> billing;
+    private List<Billing> billings;
 
     @Produces
     @Named
-    public List<Billing> getBilling() {
-        return billing;
+    public List<Billing> getBillings() {
+        return billings;
     }
 
-    public void onGoodsListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final BillingRepository billingRepository) {
+    public void onBillingListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Billing billing) {
+    	System.out.println("============");
         retrieveAllBillingOrderedById();
     }
 
     @PostConstruct
     public void retrieveAllBillingOrderedById() {
-    	billing = billingRepository.findAllOrderedById();
+    	billings = billingRepository.findAllOrderedById();
     }
 }

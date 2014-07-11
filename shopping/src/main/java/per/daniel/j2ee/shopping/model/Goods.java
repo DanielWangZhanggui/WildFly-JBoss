@@ -3,7 +3,6 @@ package per.daniel.j2ee.shopping.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -21,8 +20,7 @@ public class Goods implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private long id;
 
     @NotNull
     @Size(min = 1, max = 25)
@@ -31,14 +29,12 @@ public class Goods implements Serializable {
     @NotNull
     @Min(value=0)
     private float price;
-    @ManyToOne
-    private Billing billing;
     
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -57,14 +53,9 @@ public class Goods implements Serializable {
 	public void setPrice(float price) {
 		this.price = price;
 	}
-
-	public Billing getBilling() {
-		return billing;
-	}
-
-	public void setBilling(Billing billing) {
-		this.billing = billing;
-	}
 	
-    
+	public String toString()
+	{
+		return "Goods ID: " + id + "\t Name:" + name + "\t Price: " + price;
+	}
 }

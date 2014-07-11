@@ -25,10 +25,10 @@
            <f:facet name="header">Quantity</f:facet>
               <h:inputText id="quantity" for="quantity" value="#{quantity}" style="width:28px;"/>
          </h:column>
-          <h:column>
+         <!--  <h:column>
            <f:facet name="header">Billing</f:facet>
              #{_goods.billing}"
-         </h:column>
+         </h:column> -->
          <h:column>
            <f:facet name="header"></f:facet>
               <h:commandLink id="addToShoppingCart" action="#{billingController.addToShoppingCart(_goods)}" value="AddToShoppingCart" styleClass="shoppingcart"/>
@@ -44,7 +44,7 @@
       </h:form>
       
       <h2>BillingInfo</h2>
-      <h:panelGroup rendered="#{empty billing}">
+      <h:panelGroup rendered="#{empty billings}">
          <em>No Billings.</em>
       </h:panelGroup>
       <h:dataTable var="_billing" value="#{billings}" rendered="#{not empty billings}" styleClass="simpletablestyle">
@@ -57,16 +57,16 @@
                 #{_billing.name}
             </h:column>
          <h:column>
-            <f:facet name="header">Email</f:facet>
-                #{_billing.email}
-            </h:column>
-         <h:column>
             <f:facet name="header">Price</f:facet>
                 #{_billing.price}
             </h:column>
         <h:column>
             <f:facet name="header">Goodss</f:facet>
                 #{_billing.goodss}
+            </h:column>
+        <h:column>
+            <f:facet name="header">Status</f:facet>
+                #{_billing.status}
             </h:column>
       </h:dataTable> 
    </ui:define>

@@ -1,13 +1,10 @@
 package per.daniel.j2ee.shopping.service;
 
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
-import per.daniel.j2ee.shopping.model.Goods;
-
-@Local
+@Remote
 public interface ShoppingCart {
 
 	public void addToShoppingCart(String goods, int quantity);

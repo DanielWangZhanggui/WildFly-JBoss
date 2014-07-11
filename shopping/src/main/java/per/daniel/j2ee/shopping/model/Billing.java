@@ -3,14 +3,17 @@ package per.daniel.j2ee.shopping.model;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -23,8 +26,8 @@ public class Billing implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue( strategy = GenerationType.IDENTITY ) 
+    private long id;
 
     @Size(min = 1, max = 25)
     private String name;
@@ -32,16 +35,17 @@ public class Billing implements Serializable {
     @Min(value=0)
     private float price;
     
-    @OneToMany(mappedBy="billing")
+    @OneToMany(fetch=FetchType.LAZY, targetEntity=Goods.class, cascade=CascadeType.ALL)
+    @JoinColumn(name = "goods_id", referencedColumnName="id")
     private Set<Goods> goodss;
     
     private int status;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

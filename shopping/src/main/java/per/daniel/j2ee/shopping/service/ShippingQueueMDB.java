@@ -22,7 +22,7 @@ public class ShippingQueueMDB implements MessageListener{
     private final static Logger LOGGER = Logger.getLogger(ShippingQueueMDB.class.toString());
 
     @Inject
-    private BillingRepository billingRepository;
+    private BillingHandling billingHandling;
     /**
      * @see MessageListener#onMessage(Message)
      */
@@ -33,7 +33,8 @@ public class ShippingQueueMDB implements MessageListener{
                 msg = (ObjectMessage) rcvMessage;
                 Billing billing = (Billing) msg.getObject();
                 billing.setStatus(2);
-                billingRepository.updateBilling(billing);
+                billingHandling.updateBilling(billing);
+                LOGGER.info("Shipping Status ... " + billing.getId());
             } 
             else {
                 LOGGER.warning("Message of wrong type: " + rcvMessage.getClass().getName());

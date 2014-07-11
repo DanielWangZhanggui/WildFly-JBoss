@@ -11,7 +11,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import per.daniel.j2ee.shopping.model.Goods;
-import per.daniel.j2ee.shopping.model.Member;
 
 @RequestScoped
 public class GoodsListProducer {

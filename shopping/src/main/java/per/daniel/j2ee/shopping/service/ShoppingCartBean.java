@@ -1,5 +1,6 @@
 package per.daniel.j2ee.shopping.service;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 
+import per.daniel.j2ee.shopping.controller.BillingController;
 import per.daniel.j2ee.shopping.data.BillingRepository;
 import per.daniel.j2ee.shopping.data.GoodsRepository;
 import per.daniel.j2ee.shopping.model.Billing;
@@ -18,12 +20,13 @@ import per.daniel.j2ee.shopping.model.Goods;
 
 @Stateful
 public class ShoppingCartBean implements ShoppingCart{
+	
 	private ConcurrentHashMap<String, Integer> cart = new ConcurrentHashMap<String, Integer>();
 	@Inject
 	private GoodsRepository goodsRepository;
 	
 	@Inject
-	private BillingRepository billRepository;
+	private BillingHandling billingHandling;
 	
 	@Inject
 	private BillShipping billShipping;
@@ -48,28 +51,28 @@ public class ShoppingCartBean implements ShoppingCart{
 	@Remove
 	public void commit()
 	{
-		Set<Goods> goodsSet = new LinkedHashSet<Goods>();
 		float totalPrice = 0;
 		
 		Iterator<Map.Entry<String, Integer>> itr = cart.entrySet().iterator();
 		Billing billing = new Billing();
-		billing.setId(new Long(1));
-		billing.setStatus(0);
+		billing.setGoodss(new HashSet<Goods>());
+		
 		while(itr.hasNext())
 		{
 			Map.Entry<String, Integer> goodsEntry = itr.next(); 
 			Goods goods = goodsRepository.findByName(goodsEntry.getKey());
-			goodsSet.add(goods);
+			billing.getGoodss().add(goods);
 			totalPrice = goods.getPrice() * goodsEntry.getValue() + totalPrice;
-			billing.setPrice(totalPrice);
-			goods.setBilling(billing);
-			goodsRepository.updateGoods(goods);
 		}
 		
-//		try {
-//			billShipping.shippingBill(billing);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		billing.setPrice(totalPrice);		
+		billingHandling.commitBilling(billing);
+		LOGGER.info("Commit Billing" + billing.getId());
+		
+		try {
+			billShipping.shippingBill(billing);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

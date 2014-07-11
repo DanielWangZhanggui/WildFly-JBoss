@@ -23,7 +23,7 @@ public class BillShipping {
     private Logger log;
 
     @Inject
-    private BillingRepository billingRepository;
+    private BillingHandling billingHandling;
     
     @Resource(mappedName = "java:/ConnectionFactory")
     private ConnectionFactory connectionFactory;
@@ -34,7 +34,7 @@ public class BillShipping {
     public void shippingBill(Billing billing) throws Exception {
         log.info("Shipping... " + billing.getId());
         billing.setStatus(1);
-        billingRepository.updateBilling(billing);
+        billingHandling.updateBilling(billing);
         
         sendShippingMSG(billing);
     }
