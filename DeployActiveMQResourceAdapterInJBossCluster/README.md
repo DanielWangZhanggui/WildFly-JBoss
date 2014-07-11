@@ -2,7 +2,7 @@
 
 - We can use Activemq Resource Adapter to integrate with J2EE contain. Here I'll show you how to integrate ActiveMQ with JBoss Cluster. The key to achieve the requirement is deploy a network of brokers to allow the activemq in each node to connect to each other.
 
-- Currently, there're some articles describing how to use activemq as an embedded broker or connecting to a remote broker, [Integration of JBoss AS 7 with ActiveMQ](https://community.jboss.org/wiki/IntegrationOfJBossAS7WithActiveMQ) for example. In fact, that depends on whether we set ServerUrl to "vm://brokername" or like other "<protocol>://<host>:<port>". Or in another word, ServerUrl is a tranportConnector thing.
+- Currently, there're some articles describing how to use activemq as an embedded broker or connecting to a remote broker, [Integration of JBoss AS 7 with ActiveMQ](https://community.jboss.org/wiki/IntegrationOfJBossAS7WithActiveMQ) for example. In fact, that depends on whether we set ServerUrl to "vm://brokername" or like other "\<protocol\>://\<host\>:\<port\>". Or in another word, ServerUrl is a tranportConnector thing.
 ###Configurations in Activemq resource Adapter.
 - To allow the activemq in each Jboss node to connect to each other, we need to start an activemq broker inside of each JBoss. So here we should enable the config-property BrokerXmlConfig in activemq-ra.rar/META-INF/ra.xml
 ~~~
@@ -11,14 +11,14 @@
 3 Set the config-proper-value of the config-property BrokerXmlConfig in META-INF/ra.xml is xbean:broker-config.xml -- xbean:broker-config.xml means it'll use the broker-config.xml in CLASSPATH to as a deployment descriptor to start a broker. Here xbean:broker-config.xml means it'll use xbean:broker-config.xml from the root for the resource adapter archive.
 ~~~
 - Define the networkConnectors.
-  - Add an element <networkConnectors> to the broker-config.xml. Such as, you want to allow the broker(tcp://10.66.218.10:61616) to connect to another broker(tcp://10.66.218.107:61616). You can use the following configuration as below:
+  - Add an element \<networkConnectors\> to the broker-config.xml. Such as, you want to allow the broker(\<tcp://10.66.218.10:61616\>) to connect to another broker(\<tcp://10.66.218.107:61616\>). You can use the following configuration as below:
 ~~~
 <networkConnectors>
                   <networkConnector uri="static:(tcp://10.66.218.10:61616,tcp://10.66.218.107:61616)"/> 
 </networkConnectors>
 ~~~
   - Here I just use static reference to take an example, more advanced feature could be found in page [Networks of Brokers](http://activemq.apache.org/networks-of-brokers.html)
-- To allow clients to connect to the broker,  we can add a <transportConnector> in the broker-config.xml, for instance, <transportConnector uri="tcp://10.66.218.10:61616"/>	
+- To allow clients to connect to the broker,  we can add a \<transportConnector\> in the broker-config.xml, for instance, \<transportConnector uri="tcp://10.66.218.10:61616"/\>	
 - Recreate a new activemq-ra.rar file by using "jar cf activemq-ra.rar ./*", then deploy it to JBoss.
 - Note: you need to deploy a resouce adapter for your each node. So you need to configure a resource-adapter for your each node.
 ###Configurations in JBoss side.
@@ -72,7 +72,7 @@
             </resource-adapters>
         </subsystem>
 ~~~
-- Note: we need to set the archive to the resource adapter archive file name, and we set ServerUrl to connect your local broker which refers to the <transportConnector> in the broker-config.xml file.
+- Note: we need to set the archive to the resource adapter archive file name, and we set ServerUrl to connect your local broker which refers to the \<transportConnector\> in the broker-config.xml file.
 - To make mdb use activemq resource adapter, modify:
 ~~~
 <mdb>
