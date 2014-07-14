@@ -28,6 +28,7 @@ public class BillingRepository {
         Session session = (Session) em.getDelegate();
         Criteria cb = session.createCriteria(Billing.class);
         cb.addOrder(Order.asc("id"));
+        System.out.println(cb.list());
         return (List<Billing>) cb.list();
     }
     

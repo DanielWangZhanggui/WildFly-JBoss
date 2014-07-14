@@ -1,11 +1,11 @@
 package per.daniel.j2ee.shopping.controller;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
@@ -19,8 +19,10 @@ import per.daniel.j2ee.shopping.model.Goods;
 import per.daniel.j2ee.shopping.service.ShoppingCart;
 
 @Model
-@ApplicationScoped
-public class BillingController {
+@SessionScoped
+// need to implement Serializable
+//The bean must be Serializable because the application server must be able to cache the created instance so it can be shared between multiple calls in the same session (the active client) or the same conversation (which is linked to currently opened browser window).
+public class BillingController implements Serializable  {
 	 private final static Logger LOGGER = Logger.getLogger(BillingController.class.toString());
 	 
     @Inject
