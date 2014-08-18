@@ -48,7 +48,7 @@ ProxyPreserveHost on
 </VirtualHost>
 ~~~
 - service httpd restart
-- verify if the mod_cluster works or not via http://10.66.218.108/mod_cluster-manager.
+- verify if the mod_cluster works or not via http://10.66.218.108:6666/mod_cluster-manager.
   - Please don't forget to clean cookies when can't see the mod_cluster-manager page.
 ###EAP 6
 #### Standalone
