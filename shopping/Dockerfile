@@ -1,4 +1,4 @@
-FROM daniel/jdk:openjdk-1.7
+FROM daniel/jdk:mvn-ready
 USER root
 MAINTAINER zhanwang@redhat.com
 
